@@ -1,0 +1,23 @@
+{
+  "name": "tamsyan_flashcard",
+  "version": "1.0.0",
+  "description": "made for hacktiv8 week 2 day 5, make a flashcard with node.js",
+  "main": "flashcard.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tamatamvan/tamsyan_flashcard.git"
+  },
+  "keywords": [
+    "flashcard",
+    "hacktiv8"
+  ],
+  "author": "Tama - Syanmil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tamatamvan/tamsyan_flashcard/issues"
+  },
+  "homepage": "https://github.com/tamatamvan/tamsyan_flashcard#readme"
+}
