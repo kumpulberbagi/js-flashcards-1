@@ -1,4 +1,12 @@
+
 const fs = require('fs');
+
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 class Flashcard {
   static getData(file) {
@@ -10,32 +18,42 @@ class Flashcard {
 class FlashcardController {
   constructor(args = {}) {
     this.point = [];
-    this.answer = ""
+    this.answer = false
     this.current_soal = 0
   }
 
   generate_soal() {
-    var soalsoal = Flashcard.getData()
-    var soal = soalsoal[this.current_soal]['definition']
+    let soalsoal = Flashcard.getData()
+    let soal = soalsoal[this.current_soal]['definition']
     return soal
   }
-
-  cek_answer(answer) {
-    var jawabjawab = Flashcard.getData()
-    var jawab = jawabjawab[this.current_soal]['term']
+  cek_input(answer){
+    let jawabjawab = Flashcard.getData()
+    let jawab = jawabjawab[this.current_soal]['term']
     if (answer == jawab) {
+      this.answer = true
+      return true
+    } else {
+      this.answer = false
+      return false
+    }
+  }
+
+  cek_answer(){
+    if (this.answer = true){
       this.point.push(4)
     } else {
       this.point.push(-1)
     }
     return this.point
   }
+
   next_question() {
     this.current_soal += 1
   }
   scoring() {
-    var result = 0
-    for (var i = 0; i < this.point.length; i++) {
+    let result = 0
+    for (let i = 0; i < this.point.length; i++) {
       result = result + this.point[i]
     }
     return result
@@ -47,12 +65,40 @@ class FlashcardView {
   constructor(args = {}) {
 
   }
+  sleep() {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > 1000) {
+        break;
+      }
+    }
+  }
   start() {
-    console.log("SELAMAT DATANG DI TAMSYAN FLASHCARD GAME!");
+    console.log(" ### SELAMAT DATANG DI TAMSYAN FLASHCARD GAME! ### \n");
+    this.sleep()
   }
   soal() {
-    console.log(controller.generate_soal());
+    // rl.setPrompt(`${controller.generate_soal()} > `);
+    // rl.prompt();
+
+    if (controller.current_soal < Flashcard.getData().length) {
+      rl.question(`${controller.generate_soal()} > `, (answer) => {
+        if (controller.cek_input(answer) == true) {
+          controller.next_question();
+          console.log("\nBenar, sekarang coba jawab soal selanjutnya!\n");
+          this.soal();
+        }
+        else {
+          this.soal();
+        }
+      })
+    }
+    else {
+      console.log("Oops, ternyata soalnya udah abis. :grin:");
+      rl.close();
+    }
   }
+
 
 
 }
@@ -61,20 +107,5 @@ let controller = new FlashcardController();
 let view = new FlashcardView();
 
 view.start();
-for (var i = 0; i < Flashcard.getData().length; i++) {
-  view.soal();
-}
+view.soal();
 
-
-//Driver
-console.log(controller.generate_soal())
-console.log(controller.cek_answer("VOC"));
-controller.next_question();
-console.log(controller.generate_soal())
-console.log(controller.cek_answer("Bandung"));
-controller.next_question();
-// console.log(controller.generate_soal())
-// console.log(controller.generate_soal())
-// console.log(controller.generate_soal())
-// console.log(controller.generate_soal())
-console.log(controller.scoring());
