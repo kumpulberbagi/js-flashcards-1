@@ -30,7 +30,7 @@ class FlashcardController {
   cek_input(answer){
     let jawabjawab = Flashcard.getData()
     let jawab = jawabjawab[this.current_soal]['term']
-    if (answer == jawab) {
+    if (answer.toLowerCase() == jawab.toLowerCase()) {
       this.answer = true
       return true
     } else {
